@@ -1,0 +1,80 @@
+共享文件夹
+
+我的：\\10.188.191.214\zhangshuqi\ShareDoc
+
+王元发：\\100.104.208.228\wangyuanfa_ext\SharedDoc
+
+孙俊：\\10.188.65.179\
+
+几个SVN
+
+http://dggsvn24-rd:6801/svn/TC_Customization_SVN/软件定制/定制项目目录/00 全球/Global_parameters/EMUI9.X
+
+https://10.111.183.44/svn/NV_Tool
+http://szxsvn01-tm:6801/svn/TC_SH_DOC_2011_SVN/Protocol_NV_Baseline
+
+simInfo_mapping的git地址
+git clone http://mgit-tm.rnd.huawei.com/config/ccm/EMUI9.0.0/cust -b master
+Git\cust\param\cust\global\carrier\rule\xml\simInfo_mapping.xml
+
+华为市场feature的git地址
+git clone http://mgit-tm.rnd.huawei.com/huawei/prebuilt/odm/mtk/handset_nv_feature -b hw/cbg/P/hione/mtk_trunk_emui9.0
+
+
+代码归档仓：
+ssh://git@isource-sh.huawei.com:2222/w00186414/protocol_tools.git
+
+桌面云用户社区——壁纸：http://3ms.huawei.com/hi/index.php?app=Group&mod=Core&act=showSectionData&id=1569041&gid=7171
+
+打patch
+附上本地编译wiki：
+Atlanta 平台：http://3ms.huawei.com/hi/group/2901257/wiki_5108377.html?for_statistic_from=creation_group_wiki
+Bosotn 平台：http://3ms.huawei.com/hi/group/2901257/wiki_4783385.html?for_statistic_from=creation_group_wiki
+Chicago 和 dallas：http://3ms.huawei.com/hi/group/2901257/wiki_5013905.html
+
+
+流程记录：
+基线评审流程：
+1、填基线评审表 \\sharnd-fs\sha01\TC_Handset_SH_12_F\06.能力中心\IMS&VoLTE&VoWiFi\03 平台共性问题跟踪\基线修改评审
+2、CCM提交评审
+3、跟踪入库
+
+
+
+打patch流程
+师傅计算云：100.104.99.185
+
+	1. putty登录计算云
+	2. 在文件夹中装repo ：
+	repo init -u http://mgit-tm.rnd.huawei.com/platform/manifest.git -b hw/cbg/android/hione/release_EMUI9.0.0 -m vendor_kirin.xml --no-repo-verify --repo-branch=stable
+	3. 更新以下所有仓（repo sync + 目录）：
+	vendor/hisi/modem/include/product/nvcust
+	vendor/hisi/modem/include/product/nvtool
+	vendor/huawei/extra/modem_config
+	vendor/huawei/prebuilt/odm/hisi/handset_nv_config
+	vendor/hisi/build
+	hisi/modem/build
+	vendor/hisi/modem/build
+	vendor/hisi/modem/config/product
+	prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8
+	balong/vendor/thirdparty/hcc/arm-none-eabi-4.9
+	vendor/huawei/prebuilt/odm/hisi/handset_nv_feature
+	4. 在vendor/huawei/prebuilt/odm/hisi/handset_nv_feature/FEATURE/FEATURE_LIST中找到市场，修改参数
+	5. 保存修改后编译。
+	./vendor/huawei/prebuilt/odm/hisi/handset_nv_config/tool/make_nv_ncfg.sh platform=kirin980 productname=HMA （注意可修改平台和产品名）
+	6. 随卡生成bin文件路径：out/target/product/kirin980/HMA/odm/etc/ncfg_def
+	7. 用winscp把bin拷到本地。
+	
+	
+
+
+烧版本流程
+
+	1. 下载对应版本号 FASTBOOT 中的dex或者odex
+	2. 切cust，vendorcountry为：dex/odex 中的文件夹的名字，devmodel为版本的编号
+	3. 双击批处理文件烧版本。
+	4. 下载ROOT中的fastroot。
+	5. 双击批处理文件进行root。
+
+若adb devices 显示手机offline，则多插拔几次，先关掉“允许use调试”，再打开，再插上线。然后允许xxxxx认证
+若烧中间烧坏了，则长按音量下键+电源键进入fastboot模式，直接再烧一次。
